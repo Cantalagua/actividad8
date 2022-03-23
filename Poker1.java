@@ -1,9 +1,9 @@
 package poker1;
 
-import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 class Card {
 
@@ -62,42 +62,60 @@ class Deck {
 
     }
 
-    public String shuffle() {
+    public void shuffle() {
         Collections.shuffle(cartas);
-        String resultado = "Se mezcló el deck";
-
-        return resultado;
+        System.out.println("Se mezcló el deck");
 
     }
 
+    public void showMenu() {
+        Scanner myObj = new Scanner(System.in);
+
+        Card pick;
+        Card head;
+        Deck deck = new Deck();
+        boolean salir = false;
+        System.out.println("¡Bienvenido a Poker!");
+        while (!salir) {
+            System.out.println("\nSeleccioa una opción \n 1.Mezclar deck \n 2.Sacar una carta \n 3.Carta al azar \n 4.Generar una mano de 5 cartas \n 0.Salir");
+            String elec = myObj.nextLine();
+
+            if (elec.equals("1")) {
+                deck.shuffle();
+
+            } else if (elec.equals("2")) {
+                System.out.println("Carta head:");
+                head = deck.head();
+                System.out.println(head.toString());
+                System.out.println(deck.restantes());
+            } else if (elec.equals("3")) {
+                System.out.println("Carta pick: ");
+                pick = deck.pick();
+                System.out.println(pick.toString());
+                System.out.println(deck.restantes());
+            } else if (elec.equals("4")) {
+                System.out.println("Tu mano: ");
+                for (int i = 0; i < 5; i++) {
+                    pick = deck.pick();
+                    System.out.println(pick.toString());
+                }
+                System.out.println(deck.restantes());
+            } else if (elec.equals("0")) {
+                salir = true;
+            } else {
+                System.out.println("Opción no válida");
+            }
+
+        }
+    }
 }
 
 class CardProgram {
 
     public static void main(String[] args) {
-        Card pick;
-        Card head;
         Deck deck = new Deck();
 
-        System.out.println(deck.shuffle());
-
-        System.out.println("Carta head:");
-        head = deck.head();
-        System.out.println(head.toString());
-        System.out.println(deck.restantes());
-
-        System.out.println("Carta pick: ");
-        pick = deck.pick();
-        System.out.println(pick.toString());
-        System.out.println(deck.restantes());
-
-        System.out.println("Tu mano: ");
-        for (int i = 0; i < 5; i++) {
-            pick = deck.pick();
-            System.out.println(pick.toString());
-
-        }
-        System.out.println(deck.restantes());
+        deck.showMenu();
 
     }
 
