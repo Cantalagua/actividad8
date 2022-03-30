@@ -45,14 +45,28 @@ class Deck {
         }
     }
 
-    public Card pick() {
-        Random rdm = new Random();
-        int index = rdm.nextInt(cartas.size());
-        return cartas.remove(index);
+    public Card pick() throws Exception {
+        if (cartas.size() < 1) {
+            throw new Exception("Se agotaron las cartas");
+        }
+        try {
+            Random rdm = new Random();
+            int index = rdm.nextInt(cartas.size());
+            return cartas.remove(index);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
-    public Card head() {
-        return cartas.remove(1);
+    public Card head() throws Exception {
+        if (cartas.size() < 1) {
+            throw new Exception("Se agotaron las cartas");
+        }
+        try {
+            return cartas.remove(1);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String restantes() {
@@ -68,7 +82,7 @@ class Deck {
 
     }
 
-    public void showMenu() {
+    public void showMenu() throws Exception {
         Scanner myObj = new Scanner(System.in);
 
         Card pick;
@@ -80,9 +94,10 @@ class Deck {
             System.out.println("\nSeleccioa una opción \n 1.Mezclar deck \n 2.Sacar una carta \n 3.Carta al azar \n 4.Generar una mano de 5 cartas \n 0.Salir");
             String elec = myObj.nextLine();
 
-            if (elec.equals("1")) {
+            if (Integer.parseInt(elec) > 4) {
+                throw new Exception("Opción inválida intenta nuevamente");
+            } else if (elec.equals("1")) {
                 deck.shuffle();
-
             } else if (elec.equals("2")) {
                 System.out.println("Carta head:");
                 head = deck.head();
@@ -102,21 +117,27 @@ class Deck {
                 System.out.println(deck.restantes());
             } else if (elec.equals("0")) {
                 salir = true;
-            } else {
-                System.out.println("Opción no válida");
             }
-
         }
     }
 }
 
 class CardProgram {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Deck deck = new Deck();
+        boolean salir = false;
 
-        deck.showMenu();
-
+        while (!salir) {
+            try {
+                deck.showMenu();
+                salir = true;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                salir = false;
+                break;
+            }
+        }
     }
 
 }
